@@ -1,7 +1,8 @@
 import * as api from './api.js';
 
-const host = 'https://cicd-github-action-ex5-library.onrender.com/'
-api.settings.host = 'https://cicd-github-action-ex5-library.onrender.com/';
+import { settings } from '../config.js';
+const host = settings.host;
+api.settings.host = host;
 
 export const login = api.login;
 export const register = api.register;
