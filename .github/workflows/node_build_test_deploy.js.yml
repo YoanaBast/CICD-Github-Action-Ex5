@@ -27,7 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: install deps
-      run: npm intsall
+      run: npm install
     - name: start backend
       run: npm run start-be &
     - name: start frontend
