@@ -29,8 +29,8 @@ jobs:
     - name: install deps
       run: npm intsall
     - name: start backend
-      run: npm run start-be
+      run: npm run start-be &
     - name: start frontend
-      run: run npm run start-fe
+      run: run npm run start-fe &
     - name: run UI test
       run: npm test
