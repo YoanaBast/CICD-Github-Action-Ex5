@@ -9,32 +9,34 @@ on:
   pull_request:
     branches: [ "main" ]
 
+
 jobs:
   build_test:
 
-    runs-on: ubuntu-22.04
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Checkout the repository
+      uses: actions/checkout@v4
+    - name: Use Node.js 24
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 24
         cache: 'npm'
-    - name: install deps
-      run: npm ci
-    - name: install playwright browsers
-      run: npx playwright install --with-deps chromium
-    - name: start backend
-      run: npm run server &
-    - name: start frontend
-      run: npm start &
-    - name: wait for servers
-      run: sleep 5
-    - name: run UI test
-      run: npm test
+    - name: Install NPM dependencies
+      run: npm install
+    - name: Replace config.js with production settings
+      run: |
+        echo "export const settings = { host: 'http://localhost:3030' }" > src/config.js
+    - name: Start Backend
+      run: npm run start-be &
+    - name: Wait for backend to be ready
+      run: sleep 3
+    - name: Start FrontEnd
+      run: npm run start-fe &
+    - name: Wait for frontend to be ready
+      run: sleep 3
+    - name: Install the Playwright Browsers
+      run: npx playwright install
+    - name: Run the UI Tests
+      run: npm run test
