@@ -32,5 +32,6 @@ jobs:
       run: npm run start-be &
     - name: start frontend
       run: run npm run start-fe &
+    - run: npx playwright install --with-deps chromium
     - name: run UI test
       run: npm test
